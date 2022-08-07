@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block products %}
+<div class="catalog">
+    <div class="products">
+        <div class="container">
+            <div class="products_header">Products</div>
+            <div class="products_main">
+                {% for product in products %}
+                <div class="products_cection">
+                    <img src="{{ product.poster.url }}" class="products_img" alt="img1">
+                    <a href="{{ product.get_absolute_url }}" class="products_descr">{{ product.title }}</a>
+                    <div class="products_price">&euro;{{ product.price }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+{% endblock products %}
+

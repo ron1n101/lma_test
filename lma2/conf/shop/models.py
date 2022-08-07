@@ -1,4 +1,8 @@
+
 from django.db import models
+from django.urls import reverse
+
+
 
 class Category(models.Model):
     title = models.CharField(max_length=128, db_index=True, blank=True)
@@ -12,12 +16,15 @@ class Category(models.Model):
         return self.title
     
 
-class Home(models.Model):
-    title = models.CharField(max_length=64, blank=False)
-    image = models.ImageField(upload_to='shop/image/home_gallery')
 
-    def __str__(self):
-        return self.title
+
+class Home(models.Model):
+    title = models.CharField(max_length=64, db_index=True, blank=True)
+    image_main = models.ImageField(upload_to='shop/images/home_gallery', null=True)
+    image_second = models.ImageField(upload_to='shop/images/home_gallery', null=True)
+    image_third = models.ImageField(upload_to='shop/images/home_gallery', null=True)
+
+
 
 
 
@@ -36,13 +43,16 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
-
+    
+    def get_absolute_url(self):
+        return reverse("prod_detail", kwargs={"slug": self.slug})
+    
 
 
 
 
 class ProductImage(models.Model):
-    name = models.CharField('Заголовок', max_length=128)
+    name = models.CharField('Заголовок', max_length=128, blank = False)
     product = models.ForeignKey(Product, related_name='image_product', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='shop/images/prod_detail_img')
 

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block product_detail %}
+    <div class="menu_line"></div>
+
+        <div class="descr_product">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="photos">
+                            
+                            <img src="{{ product.poster.url }}" alt="" class="descr_product1_img_main">  
+                            {% for image in product.image_product.all %}
+                            <img src="{{ image.image.url }}" alt="" class="descr_product1_img_sub">
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="product_overview">
+                            
+                                <div class="product_label">LEAVEMEALONE</div>
+                                <div class="product_name">{{ product.title }}</div>
+                                <div class="product_price">&euro;{{ product.price }}</div>
+                                <p>Shipping calculated at checkout.</p>
+                            
+                            <div class="size">
+                                <div class="size_title">Size</div>
+                                    <button class="btn btn-outline-dark">Small</button>
+                                    <button class="btn btn-outline-dark">Medium</button>
+                                    <button class="btn btn-outline-dark">Large</button>
+                            </div>
+                            <label class="quantity-label">
+                                Quantity
+                            </label>
+                                <quantity-input class="quantity">
+                                    <button class="quantity_button" name="minus" >-</button>
+                                    <input class="quantity_input" min="1" value="1">
+                                    <button class="quantity_button" name="plus">+</button>
+                                </quantity-input>
+
+                            <button class="btn btn-outline-dark add-to-cart">Add to cart</button>
+                            <button class="btn btn-dark buy-it-now">Buy it now</button>
+                            <p>{{ product.desc }}</p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <div class="menu_line"></div>
+
+{% endblock product_detail %}
