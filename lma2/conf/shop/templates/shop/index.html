@@ -6,13 +6,15 @@
     <div class="menu_line"></div>
     {% for image in gallerys %}
     <div class="promo">
-        <div class="container">
+        <!-- <div class="container"> -->
             <div class="promo_wrapper">
                 <img class="promo_img" src="{{ image.image_main.url }}" alt="img1">
                 <img class="promo_img" src="{{ image.image_second.url }}" alt="img2">
                 <img class="promo_img" src="{{ image.image_third.url }}" alt="img3">
             </div>
-        </div>
+        
+        
+        
     </div>
     {% endfor %}
     <div class="menu_line"></div>

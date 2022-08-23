@@ -1,6 +1,7 @@
 
 from django.db import models
 from django.urls import reverse
+import slugify
 
 
 
@@ -23,9 +24,14 @@ class Home(models.Model):
     image_main = models.ImageField(upload_to='shop/images/home_gallery', null=True)
     image_second = models.ImageField(upload_to='shop/images/home_gallery', null=True)
     image_third = models.ImageField(upload_to='shop/images/home_gallery', null=True)
+    pass
 
 
+class SizeVariants(models.Model):
+    size_name = models.CharField(max_length=64, null=True)
 
+    def __str__(self):
+        return self.size
 
 
 class Product(models.Model):
@@ -33,6 +39,8 @@ class Product(models.Model):
     title = models.CharField(max_length=128, db_index=True, blank=True)
     desc = models.TextField(blank=True)
     price = models.DecimalField(max_digits=6, decimal_places=2, db_index=True)
+    num_available = models.IntegerField(default=1, null=True)
+    size = models.ManyToManyField(SizeVariants, related_name='product_size')
     available = models. BooleanField(default=True)
     slug = models.SlugField(unique=True)
     poster = models.ImageField(upload_to='shop/images/poster')
@@ -46,7 +54,14 @@ class Product(models.Model):
     
     def get_absolute_url(self):
         return reverse("prod_detail", kwargs={"slug": self.slug})
-    
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Product, self).save(*args, **kwargs)
+
+    def get_product_size(self, size):
+        return SizeVariants.objects.get(size_name=size)
+
 
 
 

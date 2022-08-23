@@ -26,9 +26,9 @@
                             
                             <div class="size">
                                 <div class="size_title">Size</div>
-                                    <button class="btn btn-outline-dark">Small</button>
-                                    <button class="btn btn-outline-dark">Medium</button>
-                                    <button class="btn btn-outline-dark">Large</button>
+                                {% for size in product.size.all %}
+                                    <button  name="selected_size" class="btn btn-outline-dark">{{ product.size }}</button>
+                                {% endfor %}
                             </div>
                             <label class="quantity-label">
                                 Quantity
