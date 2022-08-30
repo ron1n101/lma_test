@@ -1,8 +1,5 @@
-
 from django.db import models
 from django.urls import reverse
-import slugify
-
 
 
 class Category(models.Model):
@@ -15,8 +12,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
-    
-
 
 
 class Home(models.Model):
@@ -27,21 +22,13 @@ class Home(models.Model):
     pass
 
 
-class SizeVariants(models.Model):
-    size_name = models.CharField(max_length=64, null=True)
-
-    def __str__(self):
-        return self.size
-
-
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='category_products', on_delete=models.CASCADE)
     title = models.CharField(max_length=128, db_index=True, blank=True)
     desc = models.TextField(blank=True)
+    stock = models.IntegerField(null=True)
+    size = models.ManyToManyField('ProductSize', related_name='product_size')
     price = models.DecimalField(max_digits=6, decimal_places=2, db_index=True)
-    num_available = models.IntegerField(default=1, null=True)
-    size = models.ManyToManyField(SizeVariants, related_name='product_size')
-    available = models. BooleanField(default=True)
     slug = models.SlugField(unique=True)
     poster = models.ImageField(upload_to='shop/images/poster')
 
@@ -51,23 +38,32 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def get_absolute_url(self):
         return reverse("prod_detail", kwargs={"slug": self.slug})
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
-        super(Product, self).save(*args, **kwargs)
 
-    def get_product_size(self, size):
-        return SizeVariants.objects.get(size_name=size)
+class ProductSize(models.Model):
+    # SIZES = [
+    #     ('SMALL', 'SMALL'),
+    #     ('MEDIUM', 'MEDIUM'),
+    #     ('LARGE', 'LARGE'),
+    # ]
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    count = models.IntegerField(null=True)
+    size = models.CharField(max_length=20, null=True, blank=True, db_index=True)
+    is_available = models.BooleanField(default=True, db_index=True)
 
+    def __str__(self):
+        return self.size
 
-
+    class Meta:
+        verbose_name = 'Размер'
+        verbose_name_plural = 'Размеры'
 
 
 class ProductImage(models.Model):
-    name = models.CharField('Заголовок', max_length=128, blank = False)
+    name = models.CharField('Заголовок', max_length=128, blank=False)
     product = models.ForeignKey(Product, related_name='image_product', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='shop/images/prod_detail_img')
 
@@ -77,4 +73,3 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return self.name
-

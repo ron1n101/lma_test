@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block cart %}
+    <div class="menu_line"></div>
+
+    <div class="cart_with_product">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="your-cart">Your cart</div>
+                </div>
+                <div class="col-md-2 offset-md-8">
+                    <a href="{% url 'products_list' %}" class="menu_button">Continue shopping</a>
+                </div>
+                
+                    <div class="col-md-3">
+                        <div class="label_product">product</div>
+                    </div>
+                    <div class="col-md-2 offset-md-5">
+                        <div class="label_quantity">quantity</div>
+                    </div>
+                    <div class="col-md-1 offset-md-1">
+                        <div class="label_total">total</div>
+                    </div>
+
+
+
+
+
+                <div class="menu_line"></div>
+                {% for cart_item in cart_items %}
+                <div class="col-md-3">
+                    <div class="product-in-cart">
+                        <img src="{{ cart_item.product.poster.url }}" class="product-in-cart_img" alt="img1">
+                        <div class="product-in-cart_descr">
+                            <a href="{{ cart_item.product.get_absolute_url }}" class="name">{{ cart_item.product.title }}</a>
+                            <p class="price">&euro;{{ cart_item.product.price }}</p>
+                            <p class="size">Size: {{ cart_item.productsize.size }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2 offset-md-5">
+                    <quantity-input class="quantity">
+                        <a href="{% url 'remove_cart' cart_item.product.id %}" class="quantity_button" name="minus" >-</a>
+                        <input class="quantity_input" min="1" value="{{ cart_item.quantity }}">
+                        <a href="{% url 'add_cart' cart_item.product.id %}" class="quantity_button" name="plus">+</a>
+                        <a href="{% url 'remove_cart_item' cart_item.product.id  %}"><i class="fa-solid fa-trash"></i></a>
+                    </quantity-input>
+                </div>
+
+
+                <div class="col-md-1 offset-md-1">
+                    <p class="total-price">
+                        &euro;{{ cart_item.total }}
+                    </p>
+
+
+                </div>
+{% endfor %}
+
+                <div class="menu_line"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="check-out">
+            <div class="subtotal">
+                <div class="subtotal_text">Subtotal </div>
+                <p class="subtotal_price">&euro;{{ total }} EUR </p>
+            </div>
+
+            <button class="btn btn-dark check-out_btn">Check out</button>
+            <button class="btn btn-warning paypal_btn"><i class="fa-brands fa-paypal"></i></button>
+        </div>
+    </div>
+
+    <div class="menu_line"></div>
+
+{% endblock cart %}

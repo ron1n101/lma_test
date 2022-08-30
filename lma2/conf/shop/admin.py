@@ -22,13 +22,19 @@ class ProductImageInLine(admin.StackedInline):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['category','title', 'price', 'num_available', 'available', 'slug']
-    list_filter = ['available', 'price', 'category']
-    list_editable = ['available', 'price']
+    list_display = ['category','title', 'price', 'slug']
+    list_filter = ['price', 'category']
+    list_editable = ['price']
     prepopulated_fields = {'slug':('title',)}
     inlines = [ProductImageInLine]
 
-@admin.register(SizeVariants)
-class SizeVariantsAdmin(admin.ModelAdmin):
-    model = SizeVariants
-    
+# @admin.register(ProductSize)
+# class ProductSizesAdmin(admin.ModelAdmin):
+#     model = ProductSize
+#
+
+@admin.register(ProductSize)
+class ProductSizeAdmin(admin.ModelAdmin):
+    list_display = ['product', 'count', 'size', 'is_available']
+    list_filter = ['product', 'size', 'count', 'is_available']
+    list_editable = ['count', 'is_available']
