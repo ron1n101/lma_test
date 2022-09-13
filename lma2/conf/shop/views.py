@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import *
+from cart.models import Cart, CartItem
+from cart.views import _cart_id
 
 from .forms import ContactForm
 from django.core.mail import send_mail, BadHeaderError
@@ -23,9 +25,13 @@ class ProductListView(ListView):
     queryset = Product.objects.all()
 
 
-class ProductDetailView(DetailView):
-    model = Product
-    slug_field = 'slug'
+# class ProductDetailView(DetailView):
+#     model = Product
+#     slug_field = 'slug'
+    # def get(self, request, slug):
+    #     prod_detail = Product.objects.get(slug=slug)
+    #     return render(request, 'shop/product_detail.html', {'prod_detail':prod_detail})
+
 
 
 
@@ -62,3 +68,16 @@ def feedback(request):
 попробовать реализовать гет запросы в размерах
 
 """
+
+def product_detail(request, slug):
+    try:
+        prod_detail = Product.objects.get(slug=slug)
+        cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=prod_detail).exists()
+    except Exception as e:
+        raise e
+
+    context = {
+        'prod_detail':prod_detail,
+        'cart':cart,
+    }
+    return render(request, 'shop/product_detail.html', context)
