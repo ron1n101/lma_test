@@ -43,6 +43,11 @@ class Product(models.Model):
         return reverse("product_detail", kwargs={"slug": self.slug})
 
 
+
+# class VariationManager(models.Manager):
+#     def sizes(self):
+#         return super(VariationManager, self).filter(size='size', is_available=True)
+
 class ProductSize(models.Model):
     # SIZES = [
     #     ('SMALL', 'SMALL'),
@@ -54,8 +59,8 @@ class ProductSize(models.Model):
     size = models.CharField(max_length=20, null=True, blank=True, db_index=True)
     is_available = models.BooleanField(default=True, db_index=True)
 
-    def __str__(self):
-        return self.size
+    def __unicode__(self):
+        return self.product
 
     class Meta:
         verbose_name = 'Размер'

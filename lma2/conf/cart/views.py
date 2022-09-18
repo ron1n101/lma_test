@@ -13,7 +13,9 @@ def _cart_id(request): #если сессии корзины нет, то оно
 
 def add_cart(request, product_id):
     product = Product.objects.get(id=product_id) # get the product
-
+    if request.POST:
+        size = request.POST['size']
+        print(size)
     try:
         cart = Cart.objects.get(cart_id=_cart_id(request))
 

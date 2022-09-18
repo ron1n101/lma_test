@@ -37,6 +37,8 @@
                         <div class="product-in-cart_descr">
                             <a href="{{ cart_item.product.get_absolute_url }}" class="name">{{ cart_item.product.title }}</a>
                             <p class="price">&euro;{{ cart_item.product.price }}</p>
+                            {% if cart_item.productsize.all %}
+                             
                             <p class="size">Size: {{ cart_item.productsize.size }}</p>
                         </div>
                     </div>

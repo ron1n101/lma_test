@@ -3,7 +3,8 @@
 
 {% block product_detail %}
     <div class="menu_line"></div>
-
+    <form action="{% url 'add_cart' prod_detail.id %}" method="POST">
+        {% csrf_token %}
         <div class="descr_product">
             <div class="container">
                 <div class="row">
@@ -28,7 +29,7 @@
                             <div class="size">
                                 <div class="size_title">Size</div>
                                 {% for size in prod_detail.productsize_set.all %}
-                                    <button class="btn btn-outline-dark">{{ size.size }}</button>
+                                    <button class="btn btn-outline-dark" value="{{ size.size }}" name="size">{{ size.size }}</button>
                                 {% endfor %}
                             </div>
 
