@@ -72,29 +72,14 @@ def feedback(request):
 
 def product_detail(request, slug):
     try:
-        # size = request.GET['size']
+
         prod_detail = Product.objects.get(slug=slug)
-        cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=prod_detail).exists()
+        in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=prod_detail).exists()
     except Exception as e:
         raise e
 
-    # try:
-    #     quint_product = Product.object.get(prod_detail=prod_detail, cart=cart)
-    #     quint_product.quantity += 1
-    #     quint_product.save()
-    # except Product.ObjectDoesNotExist :
-    #     pass
-    #
     context = {
         'prod_detail' : prod_detail,
-        'cart' : cart,
-        # 'size': size
-    #     'quint_product':quint_product
+        'in_cart' : in_cart,
     }
     return render(request, 'shop/product_detail.html', context)
-# def quint_plus(request, product):
-#     quint_product = Product.object.get(product_id=product)
-#     quint_product.quintity += 1
-#     exutz
-
-

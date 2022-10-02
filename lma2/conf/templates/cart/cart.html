@@ -3,8 +3,19 @@
 
 
 {% block cart %}
-    <div class="menu_line"></div>
 
+    <div class="menu_line"></div>
+{% if not cart_items %}
+<br>
+<div class="header">
+    <h2 align="center">Your Shopping cart is Empty</h2>
+</div>
+
+<br>
+<div class="header">
+    <a href="{% url 'products_list' %}" class="btn btn-dark">Continue shopping</a>
+</div>
+{% else %}
     <div class="cart_with_product">
         <div class="container">
             <div class="row">
@@ -37,7 +48,7 @@
                         <div class="product-in-cart_descr">
                             <a href="{{ cart_item.product.get_absolute_url }}" class="name">{{ cart_item.product.title }}</a>
                             <p class="price">&euro;{{ cart_item.product.price }}</p>
-                            {% if cart_item.productsize.all %}
+
                              
                             <p class="size">Size: {{ cart_item.productsize.size }}</p>
                         </div>
@@ -79,7 +90,7 @@
             <button class="btn btn-warning paypal_btn"><i class="fa-brands fa-paypal"></i></button>
         </div>
     </div>
-
+{% endif %}
     <div class="menu_line"></div>
 
 {% endblock cart %}
